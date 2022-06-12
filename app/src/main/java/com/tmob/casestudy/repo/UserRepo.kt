@@ -1,5 +1,7 @@
 package com.tmob.casestudy.repo
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.tmob.casestudy.network.UserService
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -9,18 +11,10 @@ class UserRepo @Inject constructor(
     private val widgetService: UserService
 ) {
 
-
     suspend fun getUserData() = coroutineScope {
-        async{
+        async {
             return@async widgetService.getUserData()
         }
-    }.await()
-
-/*    suspend fun getProductData(url: String) = coroutineScope {
-        async {
-            return@async widgetService.getProductListData(url)
-        }
-    }.await()*/
-
+    }
 
 }

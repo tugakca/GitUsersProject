@@ -3,22 +3,41 @@ package com.tmob.casestudy.view
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.tmob.casestudy.model.UserResponse
+import com.tmob.casestudy.model.UserResponseItem
+import com.tmob.casestudy.paging.UserPagingResource
 import com.tmob.casestudy.usecase.UserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
+private const val ITEMS_PER_PAGE = 10
 @HiltViewModel
-class MainViewModel @Inject constructor(val menuUseCase: UserUseCase) : ViewModel() {
+class MainViewModel @Inject constructor(val pagingR: UserPagingResource) : ViewModel() {
+
 
     val userResponse: MutableLiveData<UserResponse> by lazy { MutableLiveData<UserResponse>() }
 
     val loading: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val error: MutableLiveData<Exception> by lazy { MutableLiveData<Exception>() }
 
-    fun getUserData() {
+    val items: Flow<PagingData<UserResponseItem>> = Pager(
+        config = PagingConfig(pageSize = ITEMS_PER_PAGE, enablePlaceholders = false),
+        pagingSourceFactory = { pagingR }
+    )
+        .flow
+        // cachedIn allows paging to remain active in the viewModel scope, so even if the UI
+        // showing the paged data goes through lifecycle changes, pagination remains cached and
+        // the UI does not have to start paging from the beginning when it resumes.
+        .cachedIn(viewModelScope)
+
+ /*   fun getUserData() {
         //loading.value = true
         viewModelScope.launch {
             try {
@@ -28,7 +47,7 @@ class MainViewModel @Inject constructor(val menuUseCase: UserUseCase) : ViewMode
                 error.value = exception
             }
         }
-    }
+    }*/
 
 /*    fun getProduct(url: String) {
        // loading.value = true

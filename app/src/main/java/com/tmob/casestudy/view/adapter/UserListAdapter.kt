@@ -3,6 +3,7 @@ package com.tmob.casestudy.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,10 +13,7 @@ import com.tmob.casestudy.model.UserResponseItem
 
 
 class UserListAdapter() :
-ListAdapter<UserResponseItem,UserListAdapter.ViewHolder>(ARTICLE_DIFF_CALLBACK)
-    {
-
-
+    PagingDataAdapter<UserResponseItem, UserListAdapter.ViewHolder>(ARTICLE_DIFF_CALLBACK) {
 
 
     inner class ViewHolder(private var binding: ItemUserBinding) :
@@ -58,10 +56,16 @@ ListAdapter<UserResponseItem,UserListAdapter.ViewHolder>(ARTICLE_DIFF_CALLBACK)
 
     companion object {
         private val ARTICLE_DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserResponseItem>() {
-            override fun areItemsTheSame(oldItem: UserResponseItem, newItem: UserResponseItem): Boolean =
+            override fun areItemsTheSame(
+                oldItem: UserResponseItem,
+                newItem: UserResponseItem
+            ): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: UserResponseItem, newItem: UserResponseItem): Boolean =
+            override fun areContentsTheSame(
+                oldItem: UserResponseItem,
+                newItem: UserResponseItem
+            ): Boolean =
                 oldItem == newItem
         }
     }

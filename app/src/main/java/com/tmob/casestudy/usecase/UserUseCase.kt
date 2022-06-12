@@ -1,6 +1,7 @@
 package com.tmob.casestudy.usecase
 
 import com.tmob.casestudy.model.UserResponse
+import com.tmob.casestudy.paging.UserPagingResource
 import com.tmob.casestudy.repo.UserRepo
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
