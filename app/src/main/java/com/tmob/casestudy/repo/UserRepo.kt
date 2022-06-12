@@ -15,6 +15,6 @@ class UserRepo @Inject constructor(
         async {
             return@async widgetService.getUserData()
         }
-    }
+    }.await()
 
 }

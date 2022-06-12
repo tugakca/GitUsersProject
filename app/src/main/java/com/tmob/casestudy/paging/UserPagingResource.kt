@@ -20,11 +20,10 @@ class UserPagingResource @Inject constructor(val userUseCase:UserUseCase) : Pagi
         // Start paging with the STARTING_KEY if this is the first load
         val start = params.key ?: STARTING_KEY
         // Load as many items as hinted by params.loadSize
-        val range = start.until(start + params.loadSize)
+        val range = start.until(start +5)
 
         val response = userUseCase.getMenuData()
-       // if (start != STARTING_KEY) delay(LOAD_DELAY_MILLIS)
-
+        delay(LOAD_DELAY_MILLIS)
 
         return LoadResult.Page(
             data = response,

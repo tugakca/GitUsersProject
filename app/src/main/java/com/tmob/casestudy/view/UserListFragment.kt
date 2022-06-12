@@ -1,6 +1,7 @@
 package com.tmob.casestudy.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tmob.casestudy.databinding.FragmentListBinding
 import com.tmob.casestudy.view.adapter.UserListAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -53,11 +55,12 @@ class UserListFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 adapter.loadStateFlow.collect {
                     binding.progress.isVisible =it.source.prepend is LoadState.Loading
+                    if(binding.progress.isVisible){
+                        Log.i("tagTES","DONE")
+                    }
                 }
             }
         }
-
-
     }
 
 }
