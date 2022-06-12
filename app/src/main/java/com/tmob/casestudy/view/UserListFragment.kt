@@ -34,14 +34,37 @@ class UserListFragment : Fragment() {
       //  setAdapter()
         userListAdapter = UserListAdapter()
         binding.bindAdapter(articleAdapter = userListAdapter)
+
+
+        binding.search.setOnQueryTextListener(object:androidx.appcompat.widget.SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                query?.let{
+                    userListAdapter.filter(query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let{
+                    userListAdapter.filter(newText)
+                }
+             return false
+            }
+
+        })
     }
 
 
 
+
+
+
+
     private fun observeData() {
-        sharedViewModel.userResponse.observe(requireActivity(), {
-            userListAdapter.submitList(it)
-        })
+        sharedViewModel.userResponse.observe(requireActivity()) {
+            userListAdapter.addUsersToList(it)
+        }
     }
 
 }

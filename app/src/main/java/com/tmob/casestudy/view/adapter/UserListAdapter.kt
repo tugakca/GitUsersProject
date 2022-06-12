@@ -8,15 +8,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tmob.casestudy.R
 import com.tmob.casestudy.databinding.ItemUserBinding
+import com.tmob.casestudy.model.UserResponse
 import com.tmob.casestudy.model.UserResponseItem
 
 
 class UserListAdapter() :
-ListAdapter<UserResponseItem,UserListAdapter.ViewHolder>(ARTICLE_DIFF_CALLBACK)
-    {
-
-
-
+    ListAdapter<UserResponseItem, UserListAdapter.ViewHolder>(ARTICLE_DIFF_CALLBACK) {
+    private lateinit var searchList: MutableList<UserResponseItem>
+    private lateinit var tempList: MutableList<UserResponseItem>
+    private lateinit var unfilteredList: MutableList<UserResponseItem>
 
     inner class ViewHolder(private var binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -27,14 +27,30 @@ ListAdapter<UserResponseItem,UserListAdapter.ViewHolder>(ARTICLE_DIFF_CALLBACK)
 
     }
 
-/*
-    fun addUsersToList(users: UserResponse) {
-        if (::userList.isInitialized)
-            userList.clear()
-        userList = UserResponse()
-        userList.addAll(users)
+
+
+
+    fun filter(query: String) {
+        if (::searchList.isInitialized)
+            searchList.clear()
+        searchList= UserResponse()
+        unfilteredList.forEach {
+            if (it.login.contains(query)) {
+                searchList.add(it)
+            }
+        }
+        if (searchList.size > 0)
+            submitList(searchList)
         notifyDataSetChanged()
-    }*/
+    }
+    fun addUsersToList(users:MutableList<UserResponseItem>) {
+        submitList(users)
+        if(::unfilteredList.isInitialized)
+            unfilteredList.clear()
+        unfilteredList=currentList
+
+
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -58,10 +74,16 @@ ListAdapter<UserResponseItem,UserListAdapter.ViewHolder>(ARTICLE_DIFF_CALLBACK)
 
     companion object {
         private val ARTICLE_DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserResponseItem>() {
-            override fun areItemsTheSame(oldItem: UserResponseItem, newItem: UserResponseItem): Boolean =
+            override fun areItemsTheSame(
+                oldItem: UserResponseItem,
+                newItem: UserResponseItem
+            ): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: UserResponseItem, newItem: UserResponseItem): Boolean =
+            override fun areContentsTheSame(
+                oldItem: UserResponseItem,
+                newItem: UserResponseItem
+            ): Boolean =
                 oldItem == newItem
         }
     }
