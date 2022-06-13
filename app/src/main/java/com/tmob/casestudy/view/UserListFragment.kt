@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tmob.casestudy.databinding.FragmentListBinding
 import com.tmob.casestudy.model.UserListResponse
-import com.tmob.casestudy.model.UserListResponseItem
 import com.tmob.casestudy.view.adapter.UserListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -47,24 +46,41 @@ class UserListFragment : Fragment() {
     }
 
     private fun setSearchBar() {
-        binding.search.setQuery("", false);
-        binding.search.clearFocus();
+        binding.search.setOnCloseListener(object :
+            androidx.appcompat.widget.SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                sharedViewModel.getUserData()
+                return false
+            }
+
+        })
         binding.search.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
-                    userListAdapter.filter(it)
+                    filter(it)
                 }
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let {
-                    userListAdapter.filter(it)
+                    filter(it)
                 }
                 return false
             }
         })
+    }
+
+    private fun filter(value: String) {
+        val searchList = UserListResponse()
+        userList.forEach {
+            if (it.login.contains(value)) {
+                searchList.add(it)
+            }
+        }
+        userListAdapter.submitList(searchList)
+
     }
 
     private fun observeData() {
