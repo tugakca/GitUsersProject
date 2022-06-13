@@ -18,5 +18,11 @@
         android:id="@+id/userDetailFragment"
         android:name="com.tmob.casestudy.view.UserDetailFragment"
         android:label="fragment_user_detail"
-        tools:layout="@layout/fragment_user_detail" />
+        tools:layout="@layout/fragment_user_detail" >
+        <argument
+            android:name="UserItem"
+            app:argType="com.tmob.casestudy.model.UserListResponseItem" />
+    </fragment>
+
+
 </navigation>

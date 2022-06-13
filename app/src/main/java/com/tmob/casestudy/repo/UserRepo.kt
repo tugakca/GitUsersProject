@@ -11,16 +11,30 @@ class UserRepo @Inject constructor(
 
 
     suspend fun getUserData() = coroutineScope {
-        async{
+        async {
             return@async widgetService.getUserData()
         }
     }.await()
 
-/*    suspend fun getProductData(url: String) = coroutineScope {
+
+    suspend fun getFollowInfo(url: String) = coroutineScope {
         async {
-            return@async widgetService.getProductListData(url)
+            return@async widgetService.getFollowInfo(url)
         }
-    }.await()*/
+    }.await()
+
+    suspend fun getFileInfo(url: String) = coroutineScope {
+        async {
+            return@async widgetService.getFileInfo(url)
+        }
+    }.await()
+
+
+    suspend fun getUserDetail(url: String) = coroutineScope {
+        async {
+            return@async widgetService.getUserDetail(url)
+        }
+    }.await()
 
 
 }

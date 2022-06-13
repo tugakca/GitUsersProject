@@ -3,52 +3,54 @@ package com.tmob.casestudy.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.findFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tmob.casestudy.R
 import com.tmob.casestudy.databinding.ItemUserBinding
-import com.tmob.casestudy.model.UserResponse
-import com.tmob.casestudy.model.UserResponseItem
+import com.tmob.casestudy.model.UserListResponseItem
+import com.tmob.casestudy.view.UserListFragment
+import com.tmob.casestudy.view.UserListFragmentDirections
 
 
 class UserListAdapter() :
-    ListAdapter<UserResponseItem, UserListAdapter.ViewHolder>(ARTICLE_DIFF_CALLBACK) {
-    private lateinit var searchList: MutableList<UserResponseItem>
-    private lateinit var tempList: MutableList<UserResponseItem>
-    private lateinit var unfilteredList: MutableList<UserResponseItem>
+    ListAdapter<UserListResponseItem, UserListAdapter.ViewHolder>(ARTICLE_DIFF_CALLBACK) {
+    private var searchList = mutableListOf<UserListResponseItem>()
+
+    private var unfilteredList = mutableListOf<UserListResponseItem>()
 
     inner class ViewHolder(private var binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: UserResponseItem) {
+        fun bind(item: UserListResponseItem) {
             binding.user = item
+            binding.root.setOnClickListener {
+                val fragment: UserListFragment = binding.root.findFragment<UserListFragment>()
+                val ar = UserListFragmentDirections.actionUserListFragmentToUserDetailFragment(item)
+                fragment.findNavController().navigate(ar)
+            }
         }
 
     }
 
-
-
-
     fun filter(query: String) {
-        if (::searchList.isInitialized)
-            searchList.clear()
-        searchList= UserResponse()
+        searchList = mutableListOf<UserListResponseItem>()
         unfilteredList.forEach {
-            if (it.login.contains(query)) {
+
+            if (it.login.contains(query)==true) {
                 searchList.add(it)
             }
         }
-        if (searchList.size > 0)
+
             submitList(searchList)
         notifyDataSetChanged()
     }
-    fun addUsersToList(users:MutableList<UserResponseItem>) {
-        submitList(users)
-        if(::unfilteredList.isInitialized)
-            unfilteredList.clear()
-        unfilteredList=currentList
 
+    fun addUsersToList(users: MutableList<UserListResponseItem>) {
+        submitList(users)
+        unfilteredList = currentList
 
     }
 
@@ -73,16 +75,16 @@ class UserListAdapter() :
 
 
     companion object {
-        private val ARTICLE_DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserResponseItem>() {
+        private val ARTICLE_DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserListResponseItem>() {
             override fun areItemsTheSame(
-                oldItem: UserResponseItem,
-                newItem: UserResponseItem
+                oldItem: UserListResponseItem,
+                newItem: UserListResponseItem
             ): Boolean =
                 oldItem.id == newItem.id
 
             override fun areContentsTheSame(
-                oldItem: UserResponseItem,
-                newItem: UserResponseItem
+                oldItem: UserListResponseItem,
+                newItem: UserListResponseItem
             ): Boolean =
                 oldItem == newItem
         }

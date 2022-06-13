@@ -4,11 +4,11 @@
     <data>
         <variable
             name="user"
-            type="com.tmob.casestudy.model.UserResponseItem" />
+            type="com.tmob.casestudy.model.UserListResponseItem" />
     </data>
 
     <LinearLayout
-
+       android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:orientation="horizontal"

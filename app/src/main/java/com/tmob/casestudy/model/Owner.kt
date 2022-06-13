@@ -1,6 +1,6 @@
 package com.tmob.casestudy.model
 
-data class UserResponseItem(
+data class Owner(
     val avatar_url: String,
     val events_url: String,
     val followers_url: String,
