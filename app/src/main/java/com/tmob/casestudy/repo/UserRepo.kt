@@ -9,23 +9,9 @@ class UserRepo @Inject constructor(
     private val widgetService: UserService
 ) {
 
-
     suspend fun getUserData() = coroutineScope {
         async {
             return@async widgetService.getUserData()
-        }
-    }.await()
-
-
-    suspend fun getFollowInfo(url: String) = coroutineScope {
-        async {
-            return@async widgetService.getFollowInfo(url)
-        }
-    }.await()
-
-    suspend fun getFileInfo(url: String) = coroutineScope {
-        async {
-            return@async widgetService.getFileInfo(url)
         }
     }.await()
 

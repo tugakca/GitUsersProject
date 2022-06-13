@@ -1,5 +1,6 @@
 package com.tmob.casestudy.view
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,10 +10,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tmob.casestudy.databinding.FragmentListBinding
-import com.tmob.casestudy.model.UserListResponse
-import com.tmob.casestudy.model.UserListResponseItem
 import com.tmob.casestudy.view.adapter.UserListAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class UserListFragment : Fragment() {
@@ -20,6 +20,10 @@ class UserListFragment : Fragment() {
     private val sharedViewModel: MainViewModel by activityViewModels()
     private lateinit var userListAdapter: UserListAdapter
     private lateinit var binding: FragmentListBinding
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,16 +35,18 @@ class UserListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedViewModel.getUserData()
+       sharedViewModel.getUserData()
         observeData()
         userListAdapter = UserListAdapter()
         binding.bindAdapter(articleAdapter = userListAdapter)
-      //  setData()
+        setSearchBar()
 
+    }
+
+    private fun setSearchBar(){
         binding.search.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-
                 query?.let {
                     userListAdapter.filter(it)
                 }
@@ -55,39 +61,18 @@ class UserListFragment : Fragment() {
             }
 
         })
-    }
-
-    private fun setData() {
-        val user = UserListResponseItem(
-            "https://avatars.githubusercontent.com/u/2?v=4",
-            "dfvsd",
-            "sddsfv",
-            "fvsdv",
-            "dfvdsfv",
-            "fbsfb",
-            "dfvsd",
-            1234,
-            "tugrul",
-            "",
-            "fdv",
-            "dfv",
-            "dfv",
-            false,
-            "fvds",
-            "dfvfsv",
-            "dfvd",
-            "sdvsdv",
-            20,
-            10
-        )
-        val list = UserListResponse()
-        list.add(user)
-        userListAdapter.addUsersToList(list)
 
     }
 
     private fun observeData() {
         sharedViewModel.userListResponse.observe(requireActivity()) {
+            val sharedValue = sharedPreferences.getString("login", "")
+            if (!sharedValue.isNullOrEmpty()) {
+
+                it.forEach { response ->
+                    response.isDetailShowed = response.login == sharedValue
+                }
+            }
             userListAdapter.addUsersToList(it)
         }
     }

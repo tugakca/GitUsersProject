@@ -14,7 +14,6 @@ import com.tmob.casestudy.model.UserListResponseItem
 import com.tmob.casestudy.view.UserListFragment
 import com.tmob.casestudy.view.UserListFragmentDirections
 
-
 class UserListAdapter() :
     ListAdapter<UserListResponseItem, UserListAdapter.ViewHolder>(ARTICLE_DIFF_CALLBACK) {
     private var searchList = mutableListOf<UserListResponseItem>()
@@ -32,7 +31,6 @@ class UserListAdapter() :
                 fragment.findNavController().navigate(ar)
             }
         }
-
     }
 
     fun filter(query: String) {
@@ -43,8 +41,7 @@ class UserListAdapter() :
                 searchList.add(it)
             }
         }
-
-            submitList(searchList)
+        submitList(searchList)
         notifyDataSetChanged()
     }
 
@@ -72,8 +69,6 @@ class UserListAdapter() :
             holder.bind(tile)
         }
     }
-
-
     companion object {
         private val ARTICLE_DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserListResponseItem>() {
             override fun areItemsTheSame(

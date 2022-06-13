@@ -26,4 +26,5 @@ data class UserListResponseItem(
     var repoSize:Int?=null,
     var starredSize:Int?=null,
     var orgSize:Int?=null,
+    var isDetailShowed:Boolean?=false,
 ):Serializable

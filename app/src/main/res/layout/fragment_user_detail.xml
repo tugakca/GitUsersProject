@@ -7,13 +7,14 @@
 
         <variable
             name="user"
-            type="com.tmob.casestudy.model.UserResponse" />
+            type="com.tmob.casestudy.model.UserDetailResponse" />
     </data>
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#126CC644">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,16 +23,13 @@
             android:orientation="vertical"
             tools:context=".view.UserDetailFragment">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="vertical"
                 android:padding="12dp">
 
                 <LinearLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -44,7 +42,7 @@
                         android:layout_height="150dp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        textBold="@{user.login}"
+                        textBold="@{user.name}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -64,7 +62,7 @@
                     android:layout_marginTop="12dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        textBold="@{user.url}"
+                        textBold="@{user.blog}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textColor="@color/black"
@@ -125,10 +123,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{user.bio}"
-
-                        />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
@@ -143,14 +138,9 @@
                         android:layout_height="50dp"
                         android:gravity="center"
                         android:text="FOLLOW"
-                        android:textColor="@color/black">
-
-                    </TextView>
+                        android:textColor="@color/black"></TextView>
                 </LinearLayout>
-
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -167,10 +157,10 @@
                     android:padding="12dp">
 
                     <androidx.appcompat.widget.AppCompatImageView
-
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/ic_launcher" />
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/dot"
+                        android:tint="@color/purple" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="0dp"
@@ -185,7 +175,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@{user.public_repos}"
+                        android:text="@{user.public_repos.toString()}"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -196,10 +186,10 @@
                     android:padding="12dp">
 
                     <androidx.appcompat.widget.AppCompatImageView
-
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/ic_launcher" />
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/dot"
+                        android:tint="@color/blue" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="0dp"
@@ -214,18 +204,12 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@{user.public_gists}"
+                        android:text="@{user.public_gists.toString()}"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
-
-
             </LinearLayout>
-
-
         </LinearLayout>
-
     </ScrollView>
-
 
 </layout>

@@ -9,13 +9,15 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="@color/teal_700"
+            android:background="@drawable/bg_gradient"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
         </View>
 
         <androidx.appcompat.widget.SearchView
+            app:queryBackground="@android:color/transparent"
+            app:iconifiedByDefault="false"
             android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
