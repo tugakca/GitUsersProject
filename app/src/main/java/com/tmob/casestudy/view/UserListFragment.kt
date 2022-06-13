@@ -10,6 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tmob.casestudy.databinding.FragmentListBinding
+import com.tmob.casestudy.model.UserListResponse
+import com.tmob.casestudy.model.UserListResponseItem
 import com.tmob.casestudy.view.adapter.UserListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -20,6 +22,7 @@ class UserListFragment : Fragment() {
     private val sharedViewModel: MainViewModel by activityViewModels()
     private lateinit var userListAdapter: UserListAdapter
     private lateinit var binding: FragmentListBinding
+    private lateinit var userList: UserListResponse
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -35,15 +38,17 @@ class UserListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       sharedViewModel.getUserData()
+        sharedViewModel.getUserData()
         observeData()
-        userListAdapter = UserListAdapter()
+        if (!::userListAdapter.isInitialized)
+            userListAdapter = UserListAdapter()
         binding.bindAdapter(articleAdapter = userListAdapter)
         setSearchBar()
-
     }
 
-    private fun setSearchBar(){
+    private fun setSearchBar() {
+        binding.search.setQuery("", false);
+        binding.search.clearFocus();
         binding.search.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -59,21 +64,19 @@ class UserListFragment : Fragment() {
                 }
                 return false
             }
-
         })
-
     }
 
     private fun observeData() {
         sharedViewModel.userListResponse.observe(requireActivity()) {
             val sharedValue = sharedPreferences.getString("login", "")
             if (!sharedValue.isNullOrEmpty()) {
-
                 it.forEach { response ->
                     response.isDetailShowed = response.login == sharedValue
                 }
             }
             userListAdapter.addUsersToList(it)
+            userList = it
         }
     }
 

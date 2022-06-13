@@ -43,12 +43,12 @@ class UserListAdapter() :
         }
         submitList(searchList)
         notifyDataSetChanged()
+
     }
 
     fun addUsersToList(users: MutableList<UserListResponseItem>) {
         submitList(users)
         unfilteredList = currentList
-
     }
 
     override fun onCreateViewHolder(

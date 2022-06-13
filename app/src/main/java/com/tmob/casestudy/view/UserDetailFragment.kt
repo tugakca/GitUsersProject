@@ -40,7 +40,6 @@ class UserDetailFragment : Fragment() {
         sharedPreferences.edit().putString("login",args.userItem.login).commit()
         requests()
         observeData()
-
     }
 
     private fun requests() {
